@@ -6,15 +6,15 @@ export function HeroDoodles() {
       className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0"
       aria-hidden="true"
     >
-      {/* 1. Shield Female (top-left) - visible on mobile */}
+      {/* 1. Shield Female (top-left corner, behind content) */}
       <div
         className="absolute doodle-float-1 block"
         style={{
-          top: "16px",
-          left: "max(12px, calc(50% - 580px))",
-          width: "82px",
-          height: "82px",
-          opacity: 0.24,
+          top: "8px",
+          left: "6px",
+          width: "68px",
+          height: "68px",
+          opacity: 0.20,
         }}
       >
         <Image
@@ -26,15 +26,15 @@ export function HeroDoodles() {
         />
       </div>
 
-      {/* 2. Calendar (top-right) - visible on mobile */}
+      {/* 2. Calendar (top-right corner) */}
       <div
         className="absolute doodle-float-4 block"
         style={{
-          top: "14px",
-          right: "max(24px, calc(50% - 560px))",
-          width: "78px",
-          height: "78px",
-          opacity: 0.22,
+          top: "8px",
+          right: "6px",
+          width: "66px",
+          height: "66px",
+          opacity: 0.18,
         }}
       >
         <Image
@@ -46,15 +46,15 @@ export function HeroDoodles() {
         />
       </div>
 
-      {/* 3. Phone Bell (bottom-right) - visible on mobile */}
+      {/* 3. Phone Bell (bottom-right corner) */}
       <div
         className="absolute doodle-float-3 block"
         style={{
-          bottom: "16px",
-          right: "max(32px, calc(50% - 540px))",
-          width: "86px",
-          height: "86px",
-          opacity: 0.25,
+          bottom: "8px",
+          right: "6px",
+          width: "74px",
+          height: "74px",
+          opacity: 0.22,
         }}
       >
         <Image
@@ -70,10 +70,10 @@ export function HeroDoodles() {
       <div
         className="absolute doodle-float-5 hidden md:block"
         style={{
-          top: "58%",
-          left: "max(8px, calc(50% - 590px))",
-          width: "80px",
-          height: "80px",
+          top: "56%",
+          left: "max(4px, calc(50% - 614px))",
+          width: "76px",
+          height: "76px",
           opacity: 0.20,
         }}
       >
@@ -90,11 +90,11 @@ export function HeroDoodles() {
       <div
         className="absolute doodle-float-2 hidden md:block"
         style={{
-          top: "46%",
-          right: "max(12px, calc(50% - 590px))",
-          width: "88px",
-          height: "88px",
-          opacity: 0.22,
+          top: "44%",
+          right: "max(4px, calc(50% - 614px))",
+          width: "80px",
+          height: "80px",
+          opacity: 0.20,
         }}
       >
         <Image
@@ -110,11 +110,11 @@ export function HeroDoodles() {
       <div
         className="absolute doodle-float-6 hidden md:block"
         style={{
-          bottom: "12px",
-          left: "max(60px, calc(50% - 510px))",
-          width: "72px",
-          height: "72px",
-          opacity: 0.26,
+          bottom: "10px",
+          left: "max(4px, calc(50% - 594px))",
+          width: "68px",
+          height: "68px",
+          opacity: 0.24,
         }}
       >
         <Image

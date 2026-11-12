@@ -40,6 +40,7 @@ h1, h2, h3 {
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 a {
@@ -150,6 +151,24 @@ img {
 }
 
 .btn:focus-visible, a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--peri);
+  outline-offset: 3px;
+}
+
+/* Card focus-visible — keyboard navigation */
+.why-card:focus-visible,
+.step:focus-visible,
+.portal:focus-visible,
+.ai-card:focus-visible,
+.res:focus-visible,
+.ben:focus-visible,
+.consent:focus-visible,
+.priv-item:focus-visible {
+  outline: 3px solid var(--peri);
+  outline-offset: 4px;
+}
+
+.toggle:focus-visible {
   outline: 3px solid var(--peri);
   outline-offset: 3px;
 }
@@ -428,10 +447,11 @@ nav {
 }
 
 /* Why */
+/* 2. Card gaps — increased so 1.04 zoom never clips neighbours */
 .cards3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: 28px;
   overflow: visible;
 }
 
@@ -468,7 +488,7 @@ nav {
 .steps {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 26px;
   counter-reset: s;
   position: relative;
   overflow: visible;
@@ -511,7 +531,7 @@ nav {
   margin-top: 16px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--peri);
+  color: #3F4E8A; /* darkened for WCAG AA on --peri-soft bg */
   background: var(--peri-soft);
   padding: 4px 10px;
   border-radius: 999px;
@@ -644,7 +664,7 @@ nav {
 .ai-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
+  gap: 28px;
   overflow: visible;
 }
 
@@ -750,7 +770,7 @@ nav {
   gap: 8px;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--peri);
+  color: #3F4E8A; /* darkened for WCAG AA on --peri-soft bg */
   background: var(--peri-soft);
   padding: 8px 14px;
   border-radius: 999px;
@@ -842,7 +862,7 @@ nav {
   gap: 6px;
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--peri);
+  color: #3F4E8A; /* darkened for WCAG AA on --peri-soft bg */
   background: var(--peri-soft);
   padding: 5px 11px;
   border-radius: 999px;
@@ -871,7 +891,7 @@ nav {
 .res-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
+  gap: 20px;
   margin-top: 56px;
   overflow: visible;
 }
@@ -937,7 +957,7 @@ nav {
 
 .priv-list {
   display: grid;
-  gap: 18px;
+  gap: 22px;
   margin-top: 30px;
 }
 
@@ -1001,7 +1021,7 @@ nav {
   padding: 5px 12px;
   border-radius: 999px;
   background: var(--peri-soft);
-  color: var(--peri);
+  color: #3F4E8A; /* darkened for WCAG AA on --peri-soft bg */
 }
 
 .row {
@@ -1076,7 +1096,7 @@ nav {
 .ben-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 28px;
   overflow: visible;
 }
 
@@ -1507,5 +1527,11 @@ footer a:hover {
   }
   .row {
     grid-template-columns: 1fr 70px 70px;
+  }
+  .foot-grid {
+    grid-template-columns: 1fr;
+  }
+  .cta-box {
+    padding: 36px 28px;
   }
 }
