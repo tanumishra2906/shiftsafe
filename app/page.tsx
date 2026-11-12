@@ -1,7 +1,33 @@
+import { Navbar } from "@/components/landing/Navbar";
+import { Hero } from "@/components/landing/Hero";
+import { WhySection } from "@/components/landing/WhySection";
+import { HowSection } from "@/components/landing/HowSection";
+import { PortalsSection } from "@/components/landing/PortalsSection";
+import { FeaturesSection } from "@/components/landing/FeaturesSection";
+import { HelpSection } from "@/components/landing/HelpSection";
+import { PrivacySection } from "@/components/landing/PrivacySection";
+import { BenefitsSection } from "@/components/landing/BenefitsSection";
+import { CtaSection } from "@/components/landing/CtaSection";
+import { Footer } from "@/components/landing/Footer";
+import { CardZoomController } from "@/components/landing/CardZoomController";
+
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <h1 className="text-3xl font-bold tracking-tight">ShiftSafe</h1>
-    </main>
+    <>
+      <CardZoomController />
+      <Navbar />
+      <main>
+        <Hero />
+        <WhySection />
+        <HowSection />
+        <PortalsSection />
+        <FeaturesSection />
+        <HelpSection />
+        <PrivacySection />
+        <BenefitsSection />
+        <CtaSection />
+      </main>
+      <Footer />
+    </>
   );
 }

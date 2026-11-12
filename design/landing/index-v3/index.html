@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SHIFTSAFE — Safer shifts. Safer journeys.</title>
+<meta name="description" content="SHIFTSAFE is an AI-powered workplace and commute safety platform for women, connecting employees, organisations and trusted contacts — with the woman in control." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  :root{
+    --cream:#FFF8EA; --cream-2:#FCEFDC;
+    --primary:#D63A5F; --primary-dark:#B32A4C;
+    --rose:#F6C9D3; --blush:#FCE4E9;
+    --peri:#5F74B8; --peri-soft:#E4E8F6;
+    --maroon:#3A0F20; --muted:#6E4655;
+    --line:rgba(58,15,32,.12);
+    --radius:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Plus Jakarta Sans",system-ui,sans-serif;background:var(--cream);color:var(--maroon);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;line-height:1.12;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary)}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--primary);border-radius:2px}
+  .sec{padding:96px 0}
+  .sec-head{max-width:680px;margin-bottom:52px}
+  .sec-head.center{margin-inline:auto;text-align:center}
+  .sec-head.center .eyebrow::after{content:"";width:22px;height:2px;background:var(--primary);border-radius:2px}
+  .sec-head h2{font-size:clamp(30px,3.6vw,44px);margin:14px 0 14px}
+  .sec-head p{color:var(--muted);font-size:17px}
+  .btn{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15px;padding:14px 24px;border-radius:999px;transition:.2s ease;border:1.5px solid transparent;cursor:pointer}
+  .btn svg{width:18px;height:18px}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 10px 24px -10px rgba(214,58,95,.7)}
+  .btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+  .btn-ghost{border-color:var(--maroon);color:var(--maroon)}
+  .btn-ghost:hover{background:var(--maroon);color:var(--cream)}
+  .btn:focus-visible,a:focus-visible{outline:3px solid var(--peri);outline-offset:3px}
+  .icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;flex-shrink:0}
+  .icon svg{width:22px;height:22px}
+
+  /* Nav */
+  header{position:sticky;top:0;z-index:20;background:rgba(255,248,234,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.06em;font-size:18px}
+  .logo-mark{width:36px;height:36px;border-radius:11px;background:var(--primary);display:grid;place-items:center;color:#fff}
+  .logo-mark svg{width:20px;height:20px}
+  .nav-links{display:flex;gap:34px;list-style:none;font-weight:500;font-size:15px}
+  .nav-links a{color:var(--muted);transition:color .2s}
+  .nav-links a:hover{color:var(--primary)}
+  .nav-right{display:flex;gap:12px;align-items:center}
+  .btn-sm{padding:10px 20px;font-size:14px}
+
+  /* Hero */
+  .hero{padding:72px 0 88px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;width:620px;height:620px;right:-140px;top:-120px;background:radial-gradient(circle,var(--blush) 0%,transparent 68%);z-index:-1}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);padding:7px 14px 7px 8px;border-radius:999px;font-size:13.5px;font-weight:500;color:var(--muted)}
+  .pill b{background:var(--blush);color:var(--primary);padding:3px 10px;border-radius:999px;font-size:12px}
+  .hero h1{font-size:clamp(40px,5vw,62px);margin:22px 0 22px}
+  .hl{color:var(--primary);font-style:italic;position:relative;white-space:nowrap}
+  .hl::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:12px;background:var(--rose);opacity:.7;z-index:-1;border-radius:4px}
+  .hero p.lead{font-size:18px;color:var(--muted);max-width:540px}
+  .hero-ctas{display:flex;gap:14px;margin:34px 0 38px;flex-wrap:wrap}
+  .trust{display:flex;gap:28px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+  .trust span{display:flex;align-items:center;gap:8px}
+  .trust svg{width:17px;height:17px;color:var(--peri)}
+  .hero-art{position:relative}
+  .hero-art .frame{border-radius:32px;overflow:hidden;background:var(--cream-2);border:1px solid var(--line);box-shadow:0 40px 80px -40px rgba(58,15,32,.35)}
+  .float{position:absolute;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 16px 36px -18px rgba(58,15,32,.35);font-size:13.5px}
+  .float .icon{width:38px;height:38px;border-radius:11px}
+  .float .icon svg{width:18px;height:18px}
+  .float strong{display:block;font-size:14px}
+  .float small{color:var(--muted)}
+  .f1{left:-34px;top:18%}
+  .f2{right:-22px;bottom:14%}
+  .ex-tag{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);opacity:.75;line-height:1.2;margin-bottom:2px}
+  .emergency{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--blush);border:1px solid rgba(214,58,95,.2);color:var(--maroon);border-radius:999px;padding:10px 20px;font-size:14.5px;font-weight:600;margin-bottom:24px}
+  .emergency svg{width:18px;height:18px;color:var(--primary)}
+  .disclaimer{max-width:320px;margin-top:14px;font-size:13px;opacity:.75}
+  .dot{width:8px;height:8px;border-radius:50%;background:#2FA36B;box-shadow:0 0 0 4px rgba(47,163,107,.18)}
+
+  /* Why */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .why-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px}
+  .why-card .stat{font-family:"Fraunces",serif;font-size:42px;color:var(--primary);margin:22px 0 4px;font-weight:600}
+  .why-card h3{font-size:21px;margin-bottom:10px}
+  .why-card p{color:var(--muted);font-size:15.5px}
+
+  /* Steps */
+  .how{background:var(--blush)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;counter-reset:s;position:relative}
+  .step{background:var(--cream);border-radius:var(--radius);padding:28px;position:relative;border:1px solid rgba(214,58,95,.15)}
+  .step-num{font-family:"Fraunces",serif;font-size:15px;font-weight:600;color:#fff;background:var(--primary);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;margin-bottom:22px}
+  .step h3{font-size:19px;margin-bottom:8px}
+  .step p{color:var(--muted);font-size:15px}
+  .step .tag{display:inline-block;margin-top:16px;font-size:12px;font-weight:600;color:var(--peri);background:var(--peri-soft);padding:4px 10px;border-radius:999px}
+
+  /* Portals */
+  .portal{border-radius:28px;padding:36px;display:flex;flex-direction:column;min-height:440px;border:1px solid var(--line)}
+  .portal h3{font-size:27px;margin:24px 0 10px}
+  .portal p{font-size:15.5px}
+  .portal ul{list-style:none;margin:24px 0 28px;display:grid;gap:12px;font-size:15px}
+  .portal li{display:flex;gap:10px;align-items:flex-start}
+  .portal li svg{width:18px;height:18px;flex-shrink:0;margin-top:3px}
+  .portal .link{margin-top:auto;font-weight:600;display:inline-flex;align-items:center;gap:8px}
+  .portal .link svg{width:18px;height:18px;transition:transform .2s}
+  .portal .link:hover svg{transform:translateX(4px)}
+  .p-emp{background:#fff}
+  .p-emp p{color:var(--muted)} .p-emp li svg,.p-emp .link{color:var(--primary)}
+  .p-org{background:var(--peri);color:#fff;border-color:transparent}
+  .p-org .icon{background:rgba(255,255,255,.16);color:#fff}
+  .p-org p{color:rgba(255,255,255,.85)}
+  .p-tc{background:var(--rose)}
+  .p-tc p{color:var(--muted)} .p-tc li svg,.p-tc .link{color:var(--maroon)}
+  .role{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
+
+  /* AI */
+  .ai{background:var(--maroon);color:var(--cream)}
+  .ai .eyebrow{color:var(--rose)} .ai .eyebrow::before,.ai .sec-head.center .eyebrow::after{background:var(--rose)}
+  .ai .sec-head p{color:rgba(255,248,234,.72)}
+  .ai-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .ai-card{background:rgba(255,248,234,.05);border:1px solid rgba(255,248,234,.12);border-radius:var(--radius);padding:32px;display:flex;gap:22px;transition:background .2s}
+  .ai-card:hover{background:rgba(255,248,234,.09)}
+  .ai-card .icon{background:var(--primary);color:#fff}
+  .ai-card:nth-child(2) .icon,.ai-card:nth-child(3) .icon{background:var(--peri)}
+  .ai-card h3{font-size:22px;margin-bottom:8px;color:#fff}
+  .ai-card p{color:rgba(255,248,234,.72);font-size:15.5px}
+  .ai-card .ex{margin-top:16px;font-size:13.5px;background:rgba(255,248,234,.07);border-left:3px solid var(--rose);padding:10px 14px;border-radius:0 10px 10px 0;color:rgba(255,248,234,.85)}
+
+  .ai-link{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:13.5px;font-weight:600;color:var(--rose)}
+  .ai-link svg{width:15px;height:15px}
+  .ai-link:hover{color:#fff}
+
+  /* Seek Help */
+  .help-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:64px;align-items:center}
+  .help-points{list-style:none;display:grid;gap:16px;margin-top:30px}
+  .help-points li{display:flex;gap:14px;align-items:center;font-size:15.5px;font-weight:500}
+  .help-points .icon{width:40px;height:40px;border-radius:12px;background:var(--blush);color:var(--primary)}
+  .help-points .icon svg{width:18px;height:18px}
+  .sos-note{margin-top:26px;display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--peri);background:var(--peri-soft);padding:8px 14px;border-radius:999px}
+  .sos-note svg{width:16px;height:16px}
+  .chat{background:#fff;border:1px solid var(--line);border-radius:28px;padding:26px;box-shadow:0 30px 60px -40px rgba(58,15,32,.4)}
+  .chat-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:20px}
+  .chat-head div{display:flex;align-items:center;gap:12px}
+  .chat-head .icon{width:40px;height:40px;border-radius:12px;background:var(--primary);color:#fff}
+  .chat-head .icon svg{width:18px;height:18px}
+  .chat-head strong{font-size:15.5px;display:block;line-height:1.3}
+  .chat-head small{color:var(--muted);font-size:12.5px}
+  .bubble{max-width:86%;padding:14px 16px;border-radius:18px;font-size:14.5px;margin-bottom:14px}
+  .bubble.user{margin-left:auto;background:var(--primary);color:#fff;border-bottom-right-radius:6px}
+  .bubble.bot{background:var(--blush);color:var(--maroon);border-bottom-left-radius:6px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 18px}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--peri);background:var(--peri-soft);padding:5px 11px;border-radius:999px}
+  .chip svg{width:13px;height:13px}
+  .chat-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding-top:16px;border-top:1px dashed var(--line)}
+  .chat-foot small{color:var(--muted);font-size:12.5px}
+  .res-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:56px}
+  .res{background:var(--blush);border:1px solid rgba(214,58,95,.12);border-radius:18px;padding:22px}
+  .res:nth-child(even){background:var(--peri-soft);border-color:rgba(95,116,184,.18)}
+  .res .icon{width:40px;height:40px;border-radius:12px;background:#fff;color:var(--primary);margin-bottom:14px}
+  .res:nth-child(even) .icon{color:var(--peri)}
+  .res .icon svg{width:18px;height:18px}
+  .res h3{font-family:"Plus Jakarta Sans",sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
+  .res p{color:var(--muted);font-size:13.5px;line-height:1.5}
+  .res-note{margin-top:18px;text-align:center;font-size:13.5px;color:var(--muted)}
+
+  /* Privacy */
+  .priv-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:64px;align-items:center}
+  .priv-list{display:grid;gap:18px;margin-top:30px}
+  .priv-item{display:flex;gap:16px}
+  .priv-item .icon{background:var(--blush);color:var(--primary);width:44px;height:44px}
+  .priv-item h3{font-family:"Plus Jakarta Sans",sans-serif;font-size:16.5px;font-weight:700;margin-bottom:2px}
+  .priv-item p{color:var(--muted);font-size:15px}
+  .consent{background:#fff;border:1px solid var(--line);border-radius:28px;padding:30px;box-shadow:0 30px 60px -40px rgba(58,15,32,.4)}
+  .consent-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:8px}
+  .consent-head strong{font-size:17px}
+  .consent-head small{color:var(--muted);font-size:13px;display:block}
+  .badge{font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--peri-soft);color:var(--peri)}
+  .row{display:grid;grid-template-columns:1fr 92px 92px;align-items:center;padding:14px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+  .row:last-child{border-bottom:0}
+  .row.th{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--line)}
+  .row.th span{text-align:center}
+  .row span:first-child{text-align:left}
+  .toggle{justify-self:center;width:42px;height:24px;border-radius:999px;background:#E9DCD9;position:relative;border:0;cursor:pointer}
+  .toggle::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .toggle[aria-checked="true"]{background:var(--primary)}
+  .toggle[aria-checked="true"]::after{left:21px}
+
+  /* Benefits */
+  .benefits{background:var(--cream-2)}
+  .ben-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .ben{border-radius:28px;padding:40px;background:#fff;border:1px solid var(--line)}
+  .ben.org{background:var(--peri-soft);border-color:rgba(95,116,184,.2)}
+  .ben-top{display:flex;align-items:center;gap:16px;margin-bottom:26px}
+  .ben-top h3{font-size:26px}
+  .ben .icon{background:var(--blush);color:var(--primary)}
+  .ben.org .icon{background:var(--peri);color:#fff}
+  .ben ul{list-style:none;display:grid;gap:16px}
+  .ben li{display:flex;gap:12px;font-size:15.5px}
+  .ben li svg{width:20px;height:20px;flex-shrink:0;margin-top:2px;color:var(--primary)}
+  .ben.org li svg{color:var(--peri)}
+  .ben li b{display:block}
+  .ben li span{color:var(--muted)}
+
+  /* CTA */
+  .cta{padding:96px 0}
+  .cta-box{background:var(--primary);border-radius:36px;padding:64px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:40px;position:relative;overflow:hidden}
+  .cta-box::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.08);right:-80px;top:-140px}
+  .cta-box h2{font-size:clamp(28px,3.2vw,40px);max-width:560px}
+  .cta-box p{opacity:.88;margin-top:12px;max-width:520px}
+  .btn-light{background:var(--cream);color:var(--maroon);position:relative;z-index:1}
+  .btn-light:hover{background:#fff}
+  .btn-outline-light{border-color:rgba(255,255,255,.6);color:#fff;position:relative;z-index:1}
+  .btn-outline-light:hover{background:rgba(255,255,255,.12)}
+
+  /* Footer */
+  footer{background:var(--maroon);color:rgba(255,248,234,.75);padding:72px 0 32px;font-size:14.5px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(255,248,234,.12)}
+  footer .logo{color:#fff;margin-bottom:16px}
+  footer h4{color:#fff;font-size:14px;font-weight:700;margin-bottom:16px}
+  footer ul{list-style:none;display:grid;gap:10px}
+  footer a:hover{color:var(--rose)}
+  .foot-bottom{display:flex;justify-content:space-between;padding-top:26px;flex-wrap:wrap;gap:12px;font-size:13.5px}
+  .helpline{margin-top:18px;display:inline-flex;gap:8px;align-items:center;background:rgba(255,248,234,.07);padding:8px 14px;border-radius:999px;font-size:13px}
+  .helpline svg{width:16px;height:16px;color:var(--rose)}
+
+  @media (max-width:980px){
+    .nav-links{display:none}
+    .hero-grid,.priv-grid,.ben-grid,.help-grid{grid-template-columns:1fr}
+    .res-grid{grid-template-columns:repeat(2,1fr)}
+    .cards3{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr 1fr}
+    .ai-grid{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .cta-box{flex-direction:column;align-items:flex-start;padding:44px}
+    .f1{left:8px} .f2{right:8px}
+    .portal{min-height:0}
+  }
+  @media (max-width:560px){
+    .steps{grid-template-columns:1fr}
+    .res-grid{grid-template-columns:1fr}
+    .sec{padding:72px 0}
+    .nav-right .btn-ghost{display:none}
+    .ai-card{flex-direction:column}
+    .row{grid-template-columns:1fr 70px 70px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap" aria-label="Primary">
+    <a href="#" class="logo" aria-label="SHIFTSAFE home">
+      <span class="logo-mark"><i data-lucide="shield-check"></i></span>SHIFTSAFE
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#portals">Portals</a></li>
+      <li><a href="#help">Seek Help</a></li>
+      <li><a href="#privacy">Privacy</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#" class="btn btn-ghost btn-sm">Login</a>
+      <a href="#" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="pill"><b>AI-assisted.</b> Consent-first.</span>
+        <h1>Safer shifts. Safer journeys. A <span class="hl">stronger</span> support network.</h1>
+        <p class="lead">SHIFTSAFE connects women, their organisations and their trusted circle on one AI-powered platform — for every late shift, every ride home, and every concern raised at work. You stay in control of what is shared.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn btn-primary">Get Started <i data-lucide="arrow-right"></i></a>
+          <a href="#features" class="btn btn-ghost">Explore Features</a>
+        </div>
+        <div class="trust">
+          <span><i data-lucide="lock"></i> You control sharing</span>
+          <span><i data-lucide="shield-check"></i> Consent-based</span>
+          <span><i data-lucide="siren"></i> Manual SOS always available</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="frame"><img src="./img/hero.png" alt="Illustration of a professional woman walking home after her shift, checking a safe route on her phone" width="1024" height="1024" /></div>
+        <div class="float f2">
+          <span class="dot" aria-hidden="true"></span>
+          <div><span class="ex-tag">Example</span><strong>Arrived home safely</strong><small>Mom &amp; Priya notified</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="why-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Why it matters</span>
+        <h2 id="why-title">Safety shouldn&apos;t end when the shift does</h2>
+        <p>Night shifts, long commutes and unreported incidents leave too many women navigating risk alone. SHIFTSAFE closes the gaps between workplace, road and home.</p>
+      </div>
+      <div class="cards3">
+        <article class="why-card">
+          <span class="icon" style="background:var(--blush);color:var(--primary)"><i data-lucide="moon-star"></i></span>
+          <div class="stat">After hours</div>
+          <h3>Late shifts carry hidden risk</h3>
+          <p>Commutes before dawn or after dark are when women feel least safe — and when support is hardest to reach.</p>
+        </article>
+        <article class="why-card">
+          <span class="icon" style="background:var(--peri-soft);color:var(--peri)"><i data-lucide="route"></i></span>
+          <div class="stat">Every ride</div>
+          <h3>Journeys go unseen</h3>
+          <p>Cab rides and route changes often happen with no one aware — until something has already gone wrong.</p>
+        </article>
+        <article class="why-card">
+          <span class="icon" style="background:var(--rose);color:var(--maroon)"><i data-lucide="message-square-warning"></i></span>
+          <div class="stat">Silence</div>
+          <h3>Workplace concerns stay unreported</h3>
+          <p>Fear of exposure keeps harassment hidden. Women need safe, confidential channels that organisations can act on.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec how" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="eyebrow">How it works</span>
+        <h2 id="how-title">Protection in four simple steps</h2>
+        <p>Set up once, and SHIFTSAFE quietly works alongside every shift and journey.</p>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <span class="step-num">01</span>
+          <h3>Join your workspace</h3>
+          <p>Sign up and link to your organisation. Your organisation&apos;s shift schedule appears in your portal.</p>
+          <span class="tag">Shift management</span>
+        </article>
+        <article class="step">
+          <span class="step-num">02</span>
+          <h3>Build your circle</h3>
+          <p>Invite family and friends as trusted contacts, and choose exactly what each one can see.</p>
+          <span class="tag">Consent controls</span>
+        </article>
+        <article class="step">
+          <span class="step-num">03</span>
+          <h3>Share My Journey</h3>
+          <p>Enter your Ola, Uber or Rapido ride details. SHIFTSAFE checks in with you if your journey runs late.</p>
+          <span class="tag">Journey check-ins</span>
+        </article>
+        <article class="step">
+          <span class="step-num">04</span>
+          <h3>Get help instantly</h3>
+          <p>Trigger SOS in one tap, or raise a complaint anonymously. The contacts and responders you chose are alerted.</p>
+          <span class="tag">Emergency SOS</span> <span class="tag">Seek Help</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="portals" aria-labelledby="portals-title">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="eyebrow">Three connected portals</span>
+        <h2 id="portals-title">One network. Three perspectives.</h2>
+        <p>Each portal is built for its people, connected by consent — and centred on the woman it protects.</p>
+      </div>
+      <div class="cards3">
+        <article class="portal p-emp">
+          <span class="icon" style="background:var(--blush);color:var(--primary)"><i data-lucide="user-round"></i></span>
+          <h3>Employee</h3>
+          <span class="role">For women at work</span>
+          <ul>
+            <li><i data-lucide="check"></i> View and manage upcoming shifts</li>
+            <li><i data-lucide="check"></i> Share My Journey with ride details</li>
+            <li><i data-lucide="check"></i> One-tap Emergency SOS</li>
+            <li><i data-lucide="check"></i> Anonymous or confidential complaints</li>
+            <li><i data-lucide="check"></i> AI safety assistant with verified helplines</li>
+          </ul>
+          <a href="#" class="link">Enter Employee portal <i data-lucide="arrow-right"></i></a>
+        </article>
+        <article class="portal p-org">
+          <span class="icon"><i data-lucide="building-2"></i></span>
+          <h3>Organisation</h3>
+          <span class="role">For HR &amp; safety teams</span>
+          <ul>
+            <li><i data-lucide="check"></i> Plan shifts with safety in mind</li>
+            <li><i data-lucide="check"></i> Receive employee-approved, structured complaints</li>
+            <li><i data-lucide="check"></i> SOS alerts with acknowledgement and audit trail</li>
+            <li><i data-lucide="check"></i> Aggregated safety reports</li>
+            <li><i data-lucide="check"></i> Role-based access for HR and Internal Committee</li>
+          </ul>
+          <a href="#" class="link">Enter Organisation portal <i data-lucide="arrow-right"></i></a>
+        </article>
+        <article class="portal p-tc">
+          <span class="icon" style="background:var(--cream);color:var(--primary)"><i data-lucide="map-pin"></i></span>
+          <h3>Trusted Contact</h3>
+          <span class="role">For family &amp; friends</span>
+          <ul>
+            <li><i data-lucide="check"></i> View journeys she chooses to share</li>
+            <li><i data-lucide="check"></i> Arrival confirmations</li>
+            <li><i data-lucide="check"></i> SOS alerts</li>
+            <li><i data-lucide="check"></i> Only what she chooses to share</li>
+          </ul>
+          <a href="#" class="link">Enter Trusted Contact portal <i data-lucide="arrow-right"></i></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec ai" id="features" aria-labelledby="ai-title">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="eyebrow">AI features</span>
+        <h2 id="ai-title">Intelligence that looks out for her</h2>
+        <p>Four AI capabilities that assist while you stay in control. SOS never depends on AI.</p>
+      </div>
+      <div class="ai-grid">
+        <article class="ai-card">
+          <span class="icon"><i data-lucide="route"></i></span>
+          <div>
+            <h3>Commute anomaly detection</h3>
+            <p>Notices when a journey runs late or goes quiet, and checks in with you first. It never assumes danger.</p>
+            <div class="ex">&ldquo;Your journey is taking longer than expected. Are you safe?&rdquo;</div>
+          </div>
+        </article>
+        <article class="ai-card">
+          <span class="icon"><i data-lucide="shield-check"></i></span>
+          <div>
+            <h3>Women&apos;s safety assistant</h3>
+            <p>Ask in plain language. Answers come from verified helplines and official resources, not guesses.</p>
+            <div class="ex">&ldquo;What are my options if a colleague makes me uncomfortable?&rdquo;</div>
+            <a href="#help" class="ai-link">Lives inside Seek Help <i data-lucide="arrow-right"></i></a>
+          </div>
+        </article>
+        <article class="ai-card">
+          <span class="icon"><i data-lucide="file-text"></i></span>
+          <div>
+            <h3>Smart complaint structuring</h3>
+            <p>Turns her own words into a structured draft. She reviews, edits and approves it before anything is submitted.</p>
+            <div class="ex">Category: Inappropriate behaviour · Date: Not provided · Awaiting your review</div>
+          </div>
+        </article>
+        <article class="ai-card">
+          <span class="icon"><i data-lucide="bell-ring"></i></span>
+          <div>
+            <h3>Smart safety alerts</h3>
+            <p>Clear alert messages for trusted contacts and the safety team when a journey runs late or SOS is triggered. When alerts are sent follows fixed rules, not AI.</p>
+            <div class="ex">&ldquo;An unusual journey delay has been detected. Please contact her and verify she is safe.&rdquo;</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="help" aria-labelledby="help-title">
+    <div class="wrap">
+      <div class="help-grid">
+        <div>
+          <span class="eyebrow">Seek Help</span>
+          <div class="sec-head" style="margin-bottom:0">
+            <h2 id="help-title">Know your options, in your own words</h2>
+            <p>Ask the SHIFTSAFE Safety Assistant a question in plain language and get guidance drawn from verified helplines and official resources. In danger, call 112 or use SOS.</p>
+          </div>
+          <ul class="help-points">
+            <li><span class="icon"><i data-lucide="message-circle"></i></span>Ask in English or Hindi</li>
+            <li><span class="icon"><i data-lucide="shield-check"></i></span>Answers come only from verified helplines and official resources</li>
+            <li><span class="icon"><i data-lucide="route"></i></span>Clear next steps, with official links</li>
+            <li><span class="icon"><i data-lucide="info"></i></span>General guidance, not legal advice</li>
+          </ul>
+          <p class="sos-note"><i data-lucide="siren"></i> SOS never depends on AI.</p>
+        </div>
+        <div class="chat" role="figure" aria-label="Example conversation with the SHIFTSAFE Safety Assistant">
+          <div class="chat-head">
+            <div><span class="icon"><i data-lucide="message-square"></i></span><span><strong>Safety Assistant</strong><small>Seek Help</small></span></div>
+            <span class="badge">Example</span>
+          </div>
+          <p class="bubble user">What can I do if a colleague keeps making me uncomfortable?</p>
+          <p class="bubble bot">You have options. You can write down what happened with dates, report it to your organisation&apos;s Internal Committee, or get free legal aid through NALSA. If you are in danger right now, call 112.</p>
+          <div class="chips" aria-label="Sources">
+            <span class="chip"><i data-lucide="building-2"></i> Internal Committee (POSH)</span>
+            <span class="chip"><i data-lucide="scale"></i> NALSA legal aid</span>
+          </div>
+          <div class="chat-foot">
+            <small>AI-generated guidance. Not legal advice.</small>
+            <a href="tel:112" class="btn btn-primary btn-sm"><i data-lucide="phone"></i> Call 112</a>
+          </div>
+        </div>
+      </div>
+      <div class="res-grid">
+        <article class="res"><span class="icon"><i data-lucide="siren"></i></span><h3>Emergency services</h3><p>Police, fire and medical help. Call 112.</p></article>
+        <article class="res"><span class="icon"><i data-lucide="phone"></i></span><h3>Women&apos;s helplines</h3><p>Support and guidance for women.</p></article>
+        <article class="res"><span class="icon"><i data-lucide="shield-alert"></i></span><h3>Cybercrime reporting</h3><p>Online harassment and cyber fraud.</p></article>
+        <article class="res"><span class="icon"><i data-lucide="scale"></i></span><h3>Free legal aid</h3><p>Through NALSA.</p></article>
+        <article class="res"><span class="icon"><i data-lucide="building-2"></i></span><h3>Your Internal Committee</h3><p>Workplace harassment complaints.</p></article>
+      </div>
+      <p class="res-note">Official numbers and links are shown in the app after verification.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="privacy" aria-labelledby="privacy-title">
+    <div class="wrap priv-grid">
+      <div>
+        <span class="eyebrow">Privacy &amp; consent</span>
+        <div class="sec-head" style="margin-bottom:0">
+          <h2 id="privacy-title">You decide who sees what</h2>
+          <p>SHIFTSAFE is built on consent. Nothing is shared with your organisation or your trusted contacts unless you allow it — and you can change your mind anytime.</p>
+        </div>
+        <div class="priv-list">
+          <div class="priv-item">
+            <span class="icon"><i data-lucide="sliders-horizontal"></i></span>
+            <div><h3>Granular controls</h3><p>Set permissions per contact and per feature — journeys, location, shift times.</p></div>
+          </div>
+          <div class="priv-item">
+            <span class="icon"><i data-lucide="user-x"></i></span>
+            <div><h3>Anonymous by design</h3><p>Anonymous complaints are built not to store or expose your identity.</p></div>
+          </div>
+          <div class="priv-item">
+            <span class="icon"><i data-lucide="shield"></i></span>
+            <div><h3>Access you can audit</h3><p>Role-based access controls and logs of who viewed sensitive information.</p></div>
+          </div>
+          <div class="priv-item">
+            <span class="icon"><i data-lucide="undo-2"></i></span>
+            <div><h3>Revoke anytime</h3><p>Withdraw any permission you&apos;ve given, whenever you choose.</p></div>
+          </div>
+          <div class="priv-item">
+            <span class="icon"><i data-lucide="map-pin"></i></span>
+            <div><h3>Location only when authorised</h3><p>Collected only during a journey you share or an SOS.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="consent" aria-label="Example sharing preferences">
+        <div class="consent-head">
+          <div><strong>Sharing preferences</strong><small>Example preferences</small></div>
+          <span class="badge">You&apos;re in control</span>
+        </div>
+        <div class="row th"><span>Information</span><span>Organisation</span><span>Trusted</span></div>
+        <div class="row"><span>Shift schedule</span><button class="toggle" role="switch" aria-checked="true" aria-label="Share shift schedule with organisation"></button><button class="toggle" role="switch" aria-checked="true" aria-label="Share shift schedule with trusted contacts"></button></div>
+        <div class="row"><span>Live journey</span><button class="toggle" role="switch" aria-checked="false" aria-label="Share live journey with organisation"></button><button class="toggle" role="switch" aria-checked="true" aria-label="Share live journey with trusted contacts"></button></div>
+        <div class="row"><span>Ride details</span><button class="toggle" role="switch" aria-checked="false" aria-label="Share ride details with organisation"></button><button class="toggle" role="switch" aria-checked="true" aria-label="Share ride details with trusted contacts"></button></div>
+        <div class="row"><span>SOS alerts</span><button class="toggle" role="switch" aria-checked="true" aria-label="Share SOS alerts with organisation"></button><button class="toggle" role="switch" aria-checked="true" aria-label="Share SOS alerts with trusted contacts"></button></div>
+        <div class="row"><span>Complaint identity</span><button class="toggle" role="switch" aria-checked="false" aria-label="Share complaint identity with organisation"></button><button class="toggle" role="switch" aria-checked="false" aria-label="Share complaint identity with trusted contacts"></button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec benefits" aria-labelledby="ben-title">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="eyebrow">Benefits</span>
+        <h2 id="ben-title">Better for her. Better for business.</h2>
+        <p>When women feel safe, they thrive — and organisations build cultures of trust.</p>
+      </div>
+      <div class="ben-grid">
+        <article class="ben">
+          <div class="ben-top"><span class="icon"><i data-lucide="user-round-check"></i></span><h3>For employees</h3></div>
+          <ul>
+            <li><i data-lucide="circle-check"></i><div><b>Peace of mind on every commute</b><span>Someone you trust can know you got home.</span></div></li>
+            <li><i data-lucide="circle-check"></i><div><b>A voice without fear</b><span>Report concerns anonymously or confidentially.</span></div></li>
+            <li><i data-lucide="circle-check"></i><div><b>Help within reach</b><span>SOS alerts the contacts and safety responders you chose.</span></div></li>
+            <li><i data-lucide="circle-check"></i><div><b>Full ownership of your data</b><span>Share only what you choose, when you choose.</span></div></li>
+          </ul>
+        </article>
+        <article class="ben org">
+          <div class="ben-top"><span class="icon"><i data-lucide="building-2"></i></span><h3>For organisations</h3></div>
+          <ul>
+            <li><i data-lucide="circle-check"></i><div><b>Support your duty of care</b><span>Give shift workers a clear safety channel.</span></div></li>
+            <li><i data-lucide="circle-check"></i><div><b>Structured, employee-approved reports</b><span>Complaints arrive organised for the right handlers.</span></div></li>
+            <li><i data-lucide="circle-check"></i><div><b>A clear emergency workflow</b><span>Acknowledge, assign and close incidents with an audit trail.</span></div></li>
+            <li><i data-lucide="circle-check"></i><div><b>Build trust</b><span>Show employees that safety is taken seriously.</span></div></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="wrap">
+      <p class="emergency" role="note"><i data-lucide="phone"></i> In an emergency, call 112.</p>
+      <div class="cta-box">
+        <div>
+          <h2 id="cta-title">Build a safer workplace — and a safer way home.</h2>
+          <p>Bring SHIFTSAFE to your team, or start protecting your own journeys today.</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="#" class="btn btn-light">Get Started <i data-lucide="arrow-right"></i></a>
+          <a href="#" class="btn btn-outline-light">Register your organisation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#" class="logo"><span class="logo-mark"><i data-lucide="shield-check"></i></span>SHIFTSAFE</a>
+        <p style="max-width:320px">AI-powered workplace and commute safety for women — connecting employees, organisations and the people who care.</p>
+        <p class="disclaimer">SHIFTSAFE supports safety and reporting. It is not a replacement for emergency services.</p>
+        <span class="helpline"><i data-lucide="phone"></i> In an emergency, call 112.</span>
+      </div>
+      <div><h4>Product</h4><ul><li><a href="#features">Features</a></li><li><a href="#how">How it works</a></li><li><a href="#portals">Portals</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#">Contact</a></li></ul></div>
+      <div><h4>Trust</h4><ul><li><a href="#privacy">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li></ul></div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 SHIFTSAFE. All rights reserved.</span>
+      <span>Made with care for every woman on every shift.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+  document.querySelectorAll('.toggle').forEach(t => t.addEventListener('click', () => {
+    t.setAttribute('aria-checked', t.getAttribute('aria-checked') !== 'true');
+  }));
+</script>
+</body>
+</html>
