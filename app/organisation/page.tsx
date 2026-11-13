@@ -1,9 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { logout } from "@/app/actions/auth";
-import { createClient } from "@/lib/supabase/server";
+import { listEmployees } from "@/lib/data/organisation";
 
 function PortalLoading() {
   return (
@@ -23,41 +20,45 @@ export default function OrganisationPage() {
 
 async function OrganisationPortal() {
   await connection();
-
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login");
-  }
-
-  const { data: profile, error } = await supabase
-    .from("profiles")
-    .select("full_name")
-    .eq("id", user.id)
-    .maybeSingle();
+  const employees = await listEmployees();
+  const registeredEmployees = employees.filter((employee) => employee.user_id);
+  const activeEmployees = registeredEmployees.filter(
+    (employee) => employee.status === "active"
+  );
+  const pendingInvites = employees.filter(
+    (employee) => employee.status === "invited"
+  );
+  const metrics = [
+    { label: "Registered employees", value: registeredEmployees.length },
+    { label: "Active employees", value: activeEmployees.length },
+    { label: "Pending invites", value: pendingInvites.length },
+  ];
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-8">
-      <section className="w-full max-w-lg rounded-xl border bg-background p-6 shadow-sm sm:p-8">
-        <h1 className="text-3xl font-semibold tracking-tight">
-          Organisation Portal
-        </h1>
-        {error ? (
-          <p className="mt-4 text-sm text-destructive" role="alert">
-            Could not load your profile: {error.message}
-          </p>
-        ) : (
-          <p className="mt-4 text-muted-foreground">
-            Welcome, {profile?.full_name || "organisation member"}.
-          </p>
-        )}
-        <form action={logout} className="mt-6">
-          <Button type="submit">Logout</Button>
-        </form>
-      </section>
-    </main>
+    <section aria-labelledby="overview-heading">
+      <h2 className="text-3xl" id="overview-heading">
+        Overview
+      </h2>
+      <p className="mt-2 text-sm text-[var(--muted)]">
+        A current view of your organisation&apos;s employee roster.
+      </p>
+      <dl className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {metrics.map((metric, index) => (
+          <div
+            className={`rounded-xl border border-[var(--line)] p-5 ${
+              index === 1 ? "bg-[var(--peri-soft)]" : "bg-white"
+            }`}
+            key={metric.label}
+          >
+            <dt className="text-sm font-semibold text-[var(--muted)]">
+              {metric.label}
+            </dt>
+            <dd className="mt-3 font-[var(--font-fraunces)] text-4xl font-semibold tabular-nums">
+              {metric.value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   );
 }
