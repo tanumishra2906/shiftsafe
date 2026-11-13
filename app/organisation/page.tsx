@@ -1,9 +1,29 @@
+import { Suspense } from "react";
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/app/actions/auth";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function OrganisationPage() {
+function PortalLoading() {
+  return (
+    <main className="flex min-h-screen items-center justify-center p-8">
+      <p role="status">Loading portal...</p>
+    </main>
+  );
+}
+
+export default function OrganisationPage() {
+  return (
+    <Suspense fallback={<PortalLoading />}>
+      <OrganisationPortal />
+    </Suspense>
+  );
+}
+
+async function OrganisationPortal() {
+  await connection();
+
   const supabase = await createClient();
   const {
     data: { user },

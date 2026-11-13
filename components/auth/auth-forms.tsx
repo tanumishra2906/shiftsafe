@@ -48,6 +48,11 @@ function FormMessage({ state }: { state: AuthActionState }) {
     >
       <MessageIcon aria-hidden="true" />
       <span>{state.message}</span>
+      {state.showLoginLink && (
+        <Link className="auth-inline-link" href="/login">
+          Log in
+        </Link>
+      )}
     </p>
   );
 }

@@ -23,7 +23,7 @@ type AuthShellProps = {
 
 export function AuthShell({ children, side }: AuthShellProps) {
   return (
-    <div className="auth-shell">
+    <div className={`auth-shell ${side ? "auth-shell--split" : "auth-shell--roles"}`}>
       <AuthDoodles />
       <header className="auth-topbar">
         <Link aria-label="SHIFTSAFE home" className="auth-logo" href="/">
@@ -52,7 +52,7 @@ export function AuthShell({ children, side }: AuthShellProps) {
                   className="auth-art-image"
                   fill
                   loading="eager"
-                  sizes="(max-width: 560px) 1px, (max-width: 900px) 130px, 300px"
+                  sizes="(max-width: 560px) 1px, (max-width: 900px) 130px, 420px"
                   src={`/doodles/${side.illustration}.png`}
                 />
               </div>
@@ -61,7 +61,13 @@ export function AuthShell({ children, side }: AuthShellProps) {
                 <span>{side.note}</span>
               </div>
             </aside>
-            <section className="auth-form-pane">{children}</section>
+            <section
+              className={`auth-form-pane${
+                side.tone === "peri" ? " auth-form-pane--wide" : ""
+              }`}
+            >
+              <div className="auth-form-content">{children}</div>
+            </section>
           </div>
         ) : (
           <section className="auth-role-card">{children}</section>

@@ -2434,7 +2434,7 @@ footer a:hover {
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1279px) {
   .auth-doodles {
     display: none;
   }
@@ -2498,3 +2498,135 @@ footer a:hover {
     transition: none !important;
   }
 }
+
+@media (min-width: 901px) {
+  .auth-shell--split {
+    display: block;
+    min-height: 100dvh;
+  }
+
+  .auth-shell--split .auth-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 22px 40px;
+  }
+
+  .auth-shell--split .auth-main {
+    width: 100%;
+    max-width: none;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+  }
+
+  .auth-shell--split .auth-card {
+    width: 100%;
+    min-height: 100dvh;
+    grid-template-columns: 45% 55%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .auth-shell--split .auth-side {
+    min-height: 100dvh;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(24px, 4vh, 48px);
+    padding: 108px 48px 48px;
+    text-align: center;
+  }
+
+  .auth-shell--split .auth-side-copy,
+  .auth-shell--split .auth-side h2,
+  .auth-shell--split .auth-side-copy > p {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .auth-shell--split .auth-side h2 {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .auth-shell--split .auth-side-copy > p {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .auth-shell--split .auth-art {
+    width: min(420px, 82%);
+    max-width: 420px;
+    flex: none;
+  }
+
+  .auth-shell--split .auth-side-note {
+    width: min(100%, 520px);
+    text-align: left;
+  }
+
+  .auth-shell--split .auth-form-pane {
+    min-height: 100dvh;
+    align-items: center;
+    background: #fff;
+    padding: 88px 64px 84px;
+  }
+
+  .auth-shell--split .auth-form-content {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+  }
+
+  .auth-shell--split .auth-form-pane--wide .auth-form-content {
+    max-width: 560px;
+  }
+
+  .auth-shell--split .auth-page-foot {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 55%;
+    background: transparent;
+    padding: 0 32px 24px;
+  }
+
+  .auth-shell--roles {
+    min-height: 100dvh;
+  }
+
+  .auth-shell--roles .auth-main {
+    display: flex;
+    max-width: 1328px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-shell--roles .auth-role-card {
+    width: 100%;
+    max-width: 1280px;
+    margin: auto 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .auth-shell--roles .auth-doodles {
+    display: none;
+  }
+
+  .auth-shell--split .auth-doodles {
+    right: 0;
+    left: 45%;
+    width: 55%;
+  }
+
+  .auth-shell--split .auth-doodle--one,
+  .auth-shell--split .auth-doodle--two,
+  .auth-shell--split .auth-doodle--three {
+    display: none;
+  }
+}
+

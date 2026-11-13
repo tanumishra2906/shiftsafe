@@ -98,42 +98,115 @@ export async function registerEmployee(
     return fieldErrors(parsed.error);
   }
 
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({
-    email: parsed.data.email,
-    password: parsed.data.password,
-    options: {
-      data: {
-        full_name: parsed.data.fullName,
-        phone: parsed.data.phone,
+  let destination: "/employee" | "/organisation" | null = null;
+
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.signUp({
+      email: parsed.data.email,
+      password: parsed.data.password,
+      options: {
+        data: {
+          full_name: parsed.data.fullName,
+          phone: parsed.data.phone,
+        },
       },
-    },
-  });
-
-  if (error) {
-    return { message: error.message };
-  }
-
-  if (parsed.data.inviteCode) {
-    const { error: inviteError } = await supabase.rpc("claim_employee_invite", {
-      p_code: parsed.data.inviteCode,
     });
 
-    if (inviteError) {
+    if (error) {
+      return { message: error.message };
+    }
+
+    let session = data.session;
+    if (!session) {
+      try {
+        const { data: signInData, error: signInError } =
+          await supabase.auth.signInWithPassword({
+            email: parsed.data.email,
+            password: parsed.data.password,
+          });
+
+        if (signInError || !signInData.session) {
+          return {
+            message: "Account created. Please log in.",
+            showLoginLink: true,
+          };
+        }
+
+        session = signInData.session;
+      } catch (signInException) {
+        console.error(
+          "Unexpected error signing in a newly registered employee.",
+          signInException
+        );
+        return {
+          message: "Account created. Please log in.",
+          showLoginLink: true,
+        };
+      }
+    }
+
+    if (parsed.data.inviteCode) {
+      try {
+        const { error: inviteError } = await supabase.rpc(
+          "claim_employee_invite",
+          { p_code: parsed.data.inviteCode }
+        );
+
+        if (inviteError) {
+          return {
+            message: `Your account was created, but the invite code could not be claimed: ${inviteError.message}`,
+          };
+        }
+      } catch (inviteException) {
+        console.error(
+          "Unexpected error claiming an employee invite.",
+          inviteException
+        );
+        return {
+          message:
+            "Your account was created, but the invite code could not be claimed. Please log in and try again.",
+          showLoginLink: true,
+        };
+      }
+    }
+
+    const { data: membership, error: membershipError } = await supabase
+      .from("organisation_members")
+      .select("id")
+      .eq("user_id", session.user.id)
+      .limit(1)
+      .maybeSingle();
+
+    if (membershipError) {
       return {
-        message: `Your account was created, but the invite code could not be claimed: ${inviteError.message}`,
+        message: `Your account was created, but organisation access could not be checked: ${membershipError.message}`,
       };
     }
-  }
 
-  if (!data.session) {
+    destination = membership ? "/organisation" : "/employee";
+  } catch (registrationException) {
+    console.error(
+      "Unexpected error during employee registration.",
+      registrationException
+    );
     return {
-      message: "Account created. Check your email to confirm it, then log in.",
-      success: true,
+      message:
+        "Registration could not be completed. If your account was created, please log in.",
+      showLoginLink: true,
     };
   }
 
-  redirect("/employee");
+  if (!destination) {
+    console.error("Employee registration completed without a destination.");
+    return {
+      message:
+        "Your account was created, but portal access could not be determined. Please log in.",
+      showLoginLink: true,
+    };
+  }
+
+  redirect(destination);
 }
 
 export async function registerOrganisation(
@@ -154,47 +227,121 @@ export async function registerOrganisation(
     return fieldErrors(parsed.error);
   }
 
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({
-    email: parsed.data.officialEmail,
-    password: parsed.data.password,
-    options: {
-      data: {
-        full_name: parsed.data.adminName,
-        phone: parsed.data.contactNumber,
+  let destination: "/employee" | "/organisation" | null = null;
+
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.signUp({
+      email: parsed.data.officialEmail,
+      password: parsed.data.password,
+      options: {
+        data: {
+          full_name: parsed.data.adminName,
+          phone: parsed.data.contactNumber,
+        },
       },
-    },
-  });
+    });
 
-  if (error) {
-    return { message: error.message };
-  }
-
-  const { error: organisationError } = await supabase.rpc(
-    "create_organisation",
-    {
-      p_name: parsed.data.organisationName,
-      p_official_email: parsed.data.officialEmail,
-      p_org_type: parsed.data.organisationType,
-      p_office_address: parsed.data.officeAddress,
-      p_contact_number: parsed.data.contactNumber,
+    if (error) {
+      return { message: error.message };
     }
-  );
 
-  if (organisationError) {
+    let session = data.session;
+    if (!session) {
+      try {
+        const { data: signInData, error: signInError } =
+          await supabase.auth.signInWithPassword({
+            email: parsed.data.officialEmail,
+            password: parsed.data.password,
+          });
+
+        if (signInError || !signInData.session) {
+          return {
+            message: "Account created. Please log in.",
+            showLoginLink: true,
+          };
+        }
+
+        session = signInData.session;
+      } catch (signInException) {
+        console.error(
+          "Unexpected error signing in a newly registered organisation admin.",
+          signInException
+        );
+        return {
+          message: "Account created. Please log in.",
+          showLoginLink: true,
+        };
+      }
+    }
+
+    try {
+      const { error: organisationError } = await supabase.rpc(
+        "create_organisation",
+        {
+          p_name: parsed.data.organisationName,
+          p_official_email: parsed.data.officialEmail,
+          p_org_type: parsed.data.organisationType,
+          p_office_address: parsed.data.officeAddress,
+          p_contact_number: parsed.data.contactNumber,
+        }
+      );
+
+      if (organisationError) {
+        return {
+          message: `The admin account was created, but the organisation could not be created: ${organisationError.message}`,
+        };
+      }
+    } catch (organisationException) {
+      console.error(
+        "Unexpected error creating an organisation.",
+        organisationException
+      );
+      return {
+        message:
+          "The admin account was created, but the organisation could not be created. Please log in and try again.",
+        showLoginLink: true,
+      };
+    }
+
+    const { data: membership, error: membershipError } = await supabase
+      .from("organisation_members")
+      .select("id")
+      .eq("user_id", session.user.id)
+      .limit(1)
+      .maybeSingle();
+
+    if (membershipError) {
+      return {
+        message: `The admin account and organisation were created, but organisation access could not be checked: ${membershipError.message}`,
+      };
+    }
+
+    destination = membership ? "/organisation" : "/employee";
+  } catch (registrationException) {
+    console.error(
+      "Unexpected error during organisation registration.",
+      registrationException
+    );
     return {
-      message: `The admin account was created, but the organisation could not be created: ${organisationError.message}`,
+      message:
+        "Registration could not be completed. If your account was created, please log in.",
+      showLoginLink: true,
     };
   }
 
-  if (!data.session) {
+  if (!destination) {
+    console.error(
+      "Organisation registration completed without a destination."
+    );
     return {
-      message: "Account created. Check your email to confirm it, then log in.",
-      success: true,
+      message:
+        "Your account was created, but portal access could not be determined. Please log in.",
+      showLoginLink: true,
     };
   }
 
-  redirect("/organisation");
+  redirect(destination);
 }
 
 export async function logout() {

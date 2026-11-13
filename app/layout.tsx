@@ -29,6 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
+      data-scroll-behavior="smooth"
       lang="en"
       className={`${fraunces.variable} ${plusJakartaSans.variable} h-full antialiased`}
     >
