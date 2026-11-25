@@ -23,7 +23,7 @@ export async function getMyOrganisation(): Promise<MyOrganisation> {
 
   const { data: memberships, error: membershipError } = await supabase
     .from("organisation_members")
-    .select("organisation_id, role")
+    .select("org_id, role")
     .eq("user_id", user.id);
 
   if (membershipError) {
@@ -36,11 +36,11 @@ export async function getMyOrganisation(): Promise<MyOrganisation> {
     return { userId: user.id, organisation: null, roles: [] };
   }
 
-  const organisationId = memberships[0].organisation_id;
+  const organisationId = memberships[0].org_id;
   const roles = [
     ...new Set(
       memberships
-        .filter((membership) => membership.organisation_id === organisationId)
+        .filter((membership) => membership.org_id === organisationId)
         .map((membership) => membership.role)
         .filter((role): role is string => typeof role === "string")
     ),
@@ -82,9 +82,9 @@ export async function listEmployees(): Promise<OrganisationEmployee[]> {
   const { data, error } = await supabase
     .from("employees")
     .select(
-      "id, user_id, full_name, email, employee_id, department, designation, office_location, status, invite_code"
+      "id, user_id, full_name, email, employee_code, department, designation, office_location, status, invite_code"
     )
-    .eq("organisation_id", context.organisation.id)
+    .eq("org_id", context.organisation.id)
     .order("full_name");
 
   if (error) {

@@ -20,7 +20,25 @@ export default function OrganisationPage() {
 
 async function OrganisationPortal() {
   await connection();
-  const employees = await listEmployees();
+  let employees: Awaited<ReturnType<typeof listEmployees>>;
+
+  try {
+    employees = await listEmployees();
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Could not load employees.";
+    return (
+      <section aria-labelledby="overview-heading">
+        <h2 className="text-3xl" id="overview-heading">
+          Overview
+        </h2>
+        <p className="mt-4 rounded-lg bg-[var(--blush)] p-4 text-sm" role="alert">
+          {message}
+        </p>
+      </section>
+    );
+  }
+
   const registeredEmployees = employees.filter((employee) => employee.user_id);
   const activeEmployees = registeredEmployees.filter(
     (employee) => employee.status === "active"

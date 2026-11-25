@@ -28,7 +28,26 @@ async function OrganisationPortalLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   await connection();
-  const context = await getMyOrganisation();
+  let context: Awaited<ReturnType<typeof getMyOrganisation>>;
+
+  try {
+    context = await getMyOrganisation();
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Could not load your organisation.";
+    return (
+      <main className="flex min-h-screen items-center justify-center p-8">
+        <p
+          className="max-w-xl rounded-lg bg-[var(--blush)] p-4 text-sm"
+          role="alert"
+        >
+          {message}
+        </p>
+      </main>
+    );
+  }
 
   if (!context.userId) {
     redirect("/login");

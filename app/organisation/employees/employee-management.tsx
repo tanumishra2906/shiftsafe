@@ -17,7 +17,7 @@ const initialState: AddEmployeeState = {};
 const fields = [
   { name: "fullName", label: "Full name", required: true },
   { name: "email", label: "Email", required: false, type: "email" },
-  { name: "employeeId", label: "Employee ID", required: false },
+  { name: "employeeCode", label: "Employee ID", required: false },
   { name: "department", label: "Department", required: false },
   { name: "designation", label: "Designation", required: false },
   { name: "officeLocation", label: "Office location", required: false },
@@ -232,7 +232,7 @@ function EmployeeRow({
   return (
     <tr>
       <td className="px-4 py-3 font-semibold">{employee.full_name}</td>
-      <td className="px-4 py-3">{employee.employee_id || "—"}</td>
+      <td className="px-4 py-3">{employee.employee_code || "—"}</td>
       <td className="px-4 py-3">{employee.department || "—"}</td>
       <td className="px-4 py-3">{employee.designation || "—"}</td>
       <td className="px-4 py-3">{employee.office_location || "—"}</td>

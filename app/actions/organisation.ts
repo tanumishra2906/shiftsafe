@@ -1,6 +1,5 @@
 "use server";
 
-import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getMyOrganisation } from "@/lib/data/organisation";
@@ -38,7 +37,7 @@ const addEmployeeSchema = z.object({
         : value,
     z.string().trim().email("Enter a valid email address.").optional()
   ),
-  employeeId: optionalText,
+  employeeCode: optionalText,
   department: optionalText,
   designation: optionalText,
   officeLocation: optionalText,
@@ -100,7 +99,7 @@ export async function addEmployee(
   const parsed = addEmployeeSchema.safeParse({
     fullName: formData.get("fullName"),
     email: formData.get("email"),
-    employeeId: formData.get("employeeId"),
+    employeeCode: formData.get("employeeCode"),
     department: formData.get("department"),
     designation: formData.get("designation"),
     officeLocation: formData.get("officeLocation"),
@@ -118,23 +117,34 @@ export async function addEmployee(
     return { message: access.error };
   }
 
-  const inviteCode = randomBytes(8).toString("hex").toUpperCase();
   const supabase = await createClient();
-  const { error } = await supabase.from("employees").insert({
-    organisation_id: access.organisationId,
-    user_id: null,
-    full_name: parsed.data.fullName,
-    email: parsed.data.email ?? null,
-    employee_id: parsed.data.employeeId ?? null,
-    department: parsed.data.department ?? null,
-    designation: parsed.data.designation ?? null,
-    office_location: parsed.data.officeLocation ?? null,
-    status: "invited",
-    invite_code: inviteCode,
-  });
+  const { data: employee, error } = await supabase
+    .from("employees")
+    .insert({
+      org_id: access.organisationId,
+      user_id: null,
+      full_name: parsed.data.fullName,
+      email: parsed.data.email ?? null,
+      employee_code: parsed.data.employeeCode ?? null,
+      department: parsed.data.department ?? null,
+      designation: parsed.data.designation ?? null,
+      office_location: parsed.data.officeLocation ?? null,
+      status: "invited",
+    })
+    .select("invite_code")
+    .single();
 
   if (error) {
     return { message: `Could not add employee: ${error.message}` };
+  }
+
+  if (!employee.invite_code) {
+    revalidatePath("/organisation");
+    revalidatePath("/organisation/employees");
+    return {
+      message:
+        "Employee added, but the invite code could not be retrieved. Refresh the employee list and try again.",
+    };
   }
 
   revalidatePath("/organisation");
@@ -142,7 +152,7 @@ export async function addEmployee(
   return {
     success: true,
     message: "Employee added. Share this invite code with them.",
-    inviteCode,
+    inviteCode: employee.invite_code,
   };
 }
 
@@ -168,7 +178,7 @@ export async function setEmployeeStatus(
     .from("employees")
     .select("id, user_id, status")
     .eq("id", parsed.data.employeeId)
-    .eq("organisation_id", access.organisationId)
+    .eq("org_id", access.organisationId)
     .maybeSingle();
 
   if (employeeError) {
@@ -196,7 +206,7 @@ export async function setEmployeeStatus(
     .from("employees")
     .update({ status: parsed.data.status })
     .eq("id", employee.id)
-    .eq("organisation_id", access.organisationId)
+    .eq("org_id", access.organisationId)
     .not("user_id", "is", null)
     .select("id")
     .maybeSingle();

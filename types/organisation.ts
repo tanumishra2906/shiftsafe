@@ -17,7 +17,7 @@ export type OrganisationEmployee = {
   user_id: string | null;
   full_name: string;
   email: string | null;
-  employee_id: string | null;
+  employee_code: string | null;
   department: string | null;
   designation: string | null;
   office_location: string | null;
